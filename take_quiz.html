@@ -137,7 +137,10 @@
                     '<h3>Quiz Results</h3>' +
                     '<div class="score-display">' + score + ' / ' + total + '</div>' +
                     '<p class="score-message">' + message + '</p>' +
-                    '<a href="student.html" class="btn-primary">Back to Dashboard</a>';
+                    '<div style="display: flex; justify-content: center; gap: 12px; margin-top: 16px;">' +
+                    '   <button class="btn-secondary" onclick="showCertificateModal(\'' + quiz.title.replace(/'/g, "\\'") + '\', ' + percentage + ')">View Certificate</button>' +
+                    '   <a href="student.html" class="btn-primary">Back to Dashboard</a>' +
+                    '</div>';
                 resultsDiv.classList.add('visible');
             }
 

@@ -304,16 +304,19 @@ function scoreQuiz() {
     if (resultsDiv) {
         const percentage = Math.round((score / totalQuestions) * 100);
         let message = '';
-        if (percentage === 100) message = 'Perfect score! Excellent work! 🎉';
-        else if (percentage >= 66) message = 'Great job! Keep it up! 👏';
-        else if (percentage >= 33) message = 'Good effort! Review the highlighted answers. 📚';
-        else message = 'Keep studying! You\'ll do better next time. 💪';
+        if (percentage === 100) message = 'Perfect score! Excellent work! ';
+        else if (percentage >= 66) message = 'Great job! Keep it up! ';
+        else if (percentage >= 33) message = 'Good effort! Review the highlighted answers. ';
+        else message = 'Keep studying! You\'ll do better next time. ';
 
         resultsDiv.innerHTML =
             '<h3>Quiz Results</h3>' +
             '<div class="score-display">' + score + ' / ' + totalQuestions + '</div>' +
             '<p class="score-message">' + message + '</p>' +
-            '<a href="student.html" class="btn-primary">Back to Dashboard</a>';
+            '<div style="display: flex; justify-content: center; gap: 12px; margin-top: 16px;">' +
+            '   <button class="btn-secondary" onclick="showCertificateModal(\'' + document.title.split(' —')[0].replace(/'/g, "\\'") + '\', ' + percentage + ')">View Certificate</button>' +
+            '   <a href="student.html" class="btn-primary">Back to Dashboard</a>' +
+            '</div>';
         resultsDiv.classList.add('visible');
     }
 
@@ -512,6 +515,141 @@ function viewScores(quizId, quizTitle) {
 function closeScoresModal() {
     var modal = document.getElementById('scores-modal');
     if (modal) modal.classList.remove('visible');
+}
+
+/* ===== Certificate Logic ===== */
+function showCertificateModal(quizTitle, percentage) {
+    var modal = document.getElementById('certificate-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'certificate-modal';
+        modal.className = 'modal-overlay';
+
+        modal.innerHTML =
+            '<div class="proctor-content" style="max-width: 850px; padding: 30px;">' +
+            '  <canvas id="cert-canvas" width="800" height="550" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"></canvas>' +
+            '  <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: center;">' +
+            '      <button class="btn-primary" onclick="downloadCertificate()">Download PNG</button>' +
+            '      <button class="btn-secondary" onclick="closeCertificateModal()">Close</button>' +
+            '  </div>' +
+            '</div>';
+
+        document.body.appendChild(modal);
+    }
+
+    modal.classList.add('visible');
+
+    // Draw certificate
+    var canvas = document.getElementById('cert-canvas');
+    var currentUser = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
+    var name = currentUser.username || 'Student';
+    drawCertificate(canvas, name, quizTitle, percentage, new Date().toLocaleDateString());
+}
+
+function closeCertificateModal() {
+    var modal = document.getElementById('certificate-modal');
+    if (modal) modal.classList.remove('visible');
+}
+
+function downloadCertificate() {
+    var canvas = document.getElementById('cert-canvas');
+    var link = document.createElement('a');
+    link.download = 'QuizHub-Certificate.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+}
+
+function drawCertificate(canvas, name, quizTitle, percentage, date) {
+    var ctx = canvas.getContext('2d');
+    var w = canvas.width;
+    var h = canvas.height;
+
+    // Background
+    ctx.fillStyle = '#f8f9fa';
+    ctx.fillRect(0, 0, w, h);
+
+    // Outer border
+    ctx.strokeStyle = '#4361ee'; // Primary color
+    ctx.lineWidth = 15;
+    ctx.strokeRect(15, 15, w - 30, h - 30);
+
+    // Inner border
+    ctx.strokeStyle = '#3f37c9';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(40, 40, w - 80, h - 80);
+
+    // Corner accents
+    var drawCorner = function (x, y) {
+        ctx.fillStyle = '#f72585'; // Accent color
+        ctx.beginPath();
+        ctx.arc(x, y, 10, 0, 2 * Math.PI);
+        ctx.fill();
+    };
+    drawCorner(40, 40);
+    drawCorner(w - 40, 40);
+    drawCorner(40, h - 40);
+    drawCorner(w - 40, h - 40);
+
+    // Heading
+    ctx.fillStyle = '#1a1a2e';
+    ctx.font = 'bold 48px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('CERTIFICATE OF COMPLETION', w / 2, 120);
+
+    // Subheading
+    ctx.fillStyle = '#6c757d';
+    ctx.font = 'italic 24px Arial, sans-serif';
+    ctx.fillText('This is to certify that', w / 2, 180);
+
+    // Name
+    ctx.fillStyle = '#4361ee';
+    ctx.font = 'bold 54px Arial, sans-serif';
+    ctx.fillText(name, w / 2, 250);
+
+    // Decorative line under name
+    ctx.beginPath();
+    ctx.moveTo(w / 2 - 200, 270);
+    ctx.lineTo(w / 2 + 200, 270);
+    ctx.strokeStyle = '#ccc';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Quiz description
+    ctx.fillStyle = '#1a1a2e';
+    ctx.font = '22px Arial, sans-serif';
+    ctx.fillText('has successfully completed the assessment for:', w / 2, 320);
+
+    ctx.fillStyle = '#f72585';
+    ctx.font = 'bold 36px Arial, sans-serif';
+    ctx.fillText(quizTitle, w / 2, 370);
+
+    // Score
+    ctx.fillStyle = '#6c757d';
+    ctx.font = '24px Arial, sans-serif';
+    ctx.fillText('with a score of ' + percentage + '%', w / 2, 420);
+
+    // Date & Signature
+    ctx.font = '20px Arial, sans-serif';
+    ctx.fillStyle = '#1a1a2e';
+
+    // Line for date
+    ctx.beginPath();
+    ctx.moveTo(150, 480);
+    ctx.lineTo(300, 480);
+    ctx.stroke();
+    ctx.fillText(date, 225, 470);
+    ctx.fillText('Date', 225, 510);
+
+    // Line for signature
+    ctx.beginPath();
+    ctx.moveTo(w - 300, 480);
+    ctx.lineTo(w - 150, 480);
+    ctx.stroke();
+
+    ctx.font = 'italic 26px "Brush Script MT", cursive';
+    ctx.fillText('QuizHub Admin', w - 225, 470);
+    ctx.font = '20px Arial, sans-serif';
+    ctx.fillText('Authorized Signature', w - 225, 510);
 }
 
 /* ===== Leaderboard ===== */
