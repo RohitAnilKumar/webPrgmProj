@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Quiz — QuizHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1><a href="home.html">Quiz<span class="logo-accent">Hub</span></a></h1>
+        <div class="nav-actions">
+            <a href="student.html">← Back to Dashboard</a>
+            <a href="#" onclick="logout()" class="btn-danger">Logout</a>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="quiz-header">
+                <h2 id="quiz-title-heading">Loading Quiz...</h2>
+                <div class="timer-widget">
+                    <canvas id="timer-canvas" width="120" height="120"></canvas>
+                    <div id="timer">05:00</div>
+                </div>
+            </div>
+            <form id="quiz-form" onsubmit="submitDynamicQuiz(event)">
+                <div id="dynamic-questions"></div>
+                <button type="submit" class="btn-primary">Submit Quiz</button>
+            </form>
+            <div id="quiz-results"></div>
+            <div id="proctor-overlay"></div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2026 QuizHub. Built as a Student Project.</p>
+    </footer>
+    <script src="index.js"></script>
+    <script>
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            var quizId = params.get('id');
+            if (!quizId) {
+                document.getElementById('dynamic-questions').innerHTML = '<p>No quiz selected.</p>';
+                return;
+            }
+
+            document.body.setAttribute('data-quiz-id', quizId);
+
+            var quizzes = JSON.parse(localStorage.getItem('quizzes') || '[]');
+            var quiz = quizzes.find(function (q) { return q.id === quizId; });
+            if (!quiz) {
+                document.getElementById('dynamic-questions').innerHTML = '<p>Quiz not found.</p>';
+                return;
+            }
+
+            document.getElementById('quiz-title-heading').textContent = quiz.title;
+            document.title = quiz.title + ' — QuizHub';
+
+            var container = document.getElementById('dynamic-questions');
+            quiz.questions.forEach(function (q, i) {
+                var qNum = i + 1;
+                var optionsHtml = '';
+                q.options.forEach(function (opt, j) {
+                    var val = String.fromCharCode(97 + j); // a, b, c, d
+                    optionsHtml +=
+                        '<div class="option">' +
+                        '  <input type="radio" id="dq' + qNum + '-op' + (j + 1) + '" name="dq' + qNum + '" value="' + val + '">' +
+                        '  <label for="dq' + qNum + '-op' + (j + 1) + '">' + opt + '</label>' +
+                        '</div>';
+                });
+
+                container.innerHTML +=
+                    '<div class="question" data-correct="' + getCorrectValue(q) + '">' +
+                    '  <p>' + qNum + '. ' + q.text + '</p>' +
+                    '  <div class="options">' + optionsHtml + '</div>' +
+                    '</div>';
+            });
+
+            function getCorrectValue(q) {
+                for (var k = 0; k < q.options.length; k++) {
+                    if (q.options[k] === q.correct) {
+                        return String.fromCharCode(97 + k);
+                    }
+                }
+                return '';
+            }
+        })();
+
+        function submitDynamicQuiz(event) {
+            if (event) event.preventDefault();
+            if (event && !confirm('Are you sure you want to submit the quiz?')) return;
+            clearInterval(timerInterval);
+
+            var questions = document.querySelectorAll('#dynamic-questions .question');
+            var score = 0;
+            var total = questions.length;
+
+            questions.forEach(function (qDiv, i) {
+                var qName = 'dq' + (i + 1);
+                var correctVal = qDiv.getAttribute('data-correct');
+                var selected = document.querySelector('input[name="' + qName + '"]:checked');
+                var options = qDiv.querySelectorAll('.option');
+
+                if (selected && selected.value === correctVal) {
+                    score++;
+                    qDiv.classList.add('correct');
+                } else {
+                    qDiv.classList.add('wrong');
+                }
+
+                options.forEach(function (option) {
+                    var radio = option.querySelector('input[type="radio"]');
+                    if (radio.value === correctVal) {
+                        option.classList.add('correct-answer');
+                    } else if (selected && radio.value === selected.value && radio.value !== correctVal) {
+                        option.classList.add('wrong-answer');
+                    }
+                    radio.disabled = true;
+                });
+            });
+
+            var submitBtn = document.querySelector('#quiz-form button[type="submit"]');
+            if (submitBtn) submitBtn.disabled = true;
+
+            var resultsDiv = document.getElementById('quiz-results');
+            if (resultsDiv) {
+                var percentage = Math.round((score / total) * 100);
+                var message = '';
+                if (percentage === 100) message = 'Perfect score! Excellent work! ';
+                else if (percentage >= 66) message = 'Great job! Keep it up! ';
+                else if (percentage >= 33) message = 'Good effort! Review the highlighted answers. ';
+                else message = 'Keep studying! You\'ll do better next time. ';
+
+                resultsDiv.innerHTML =
+                    '<h3>Quiz Results</h3>' +
+                    '<div class="score-display">' + score + ' / ' + total + '</div>' +
+                    '<p class="score-message">' + message + '</p>' +
+                    '<a href="student.html" class="btn-primary">Back to Dashboard</a>';
+                resultsDiv.classList.add('visible');
+            }
+
+            var quizId = document.body.getAttribute('data-quiz-id');
+            var userEmail = getCurrentUserEmail();
+            if (quizId && userEmail) {
+                var results = JSON.parse(localStorage.getItem('quizResults') || '{}');
+                if (!results[userEmail]) results[userEmail] = {};
+                results[userEmail][quizId] = { score: score, total: total };
+                localStorage.setItem('quizResults', JSON.stringify(results));
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard — QuizHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1><a href="home.html">Quiz<span class="logo-accent">Hub</span></a></h1>
+        <div class="nav-actions">
+            <a href="admin.html">Dashboard</a>
+            <a href="create_quiz.html">Create Quiz</a>
+            <a href="#" onclick="logout()" class="btn-danger">Logout</a>
+        </div>
+    </header>
+    <main>
+<div class="container">
+    <h2>Admin Dashboard</h2>
+    <p style="color: var(--text-light); margin-bottom: 24px;">Welcome back, Admin! Manage your quizzes below.</p>
+
+    <a href="create_quiz.html" class="btn-primary">+ Create New Quiz</a>
+
+    <table class="table" style="margin-top: 24px;">
+        <thead>
+            <tr>
+                <th>Quiz Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Technology Quiz</strong></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td><a href="#" class="btn-secondary" style="padding: 6px 14px; font-size: 0.85rem;" onclick="viewScores('technology', 'Technology Quiz')">View Scores</a></td>
+            </tr>
+            <tr>
+                <td><strong>General Knowledge</strong></td>
+                <td><span class="badge badge-draft">Draft</span></td>
+                <td><a href="#" class="btn-secondary" style="padding: 6px 14px; font-size: 0.85rem;" onclick="viewScores('general-knowledge', 'General Knowledge')">View Scores</a></td>
+            </tr>
+            <tr>
+                <td><strong>Science Quiz</strong></td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td><a href="#" class="btn-secondary" style="padding: 6px 14px; font-size: 0.85rem;" onclick="viewScores('science', 'Science Quiz')">View Scores</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    </main>
+    <footer>
+        <p>&copy; 2026 QuizHub. Built as a Student Project.</p>
+    </footer>
+<script src="index.js"></script>
+</body>
+</html>

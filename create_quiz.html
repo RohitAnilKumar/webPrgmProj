@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Quiz — QuizHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1><a href="home.html">Quiz<span class="logo-accent">Hub</span></a></h1>
+        <div class="nav-actions">
+            <a href="admin.html">← Back to Dashboard</a>
+            <a href="#" onclick="logout()" class="btn-danger">Logout</a>
+        </div>
+    </header>
+    <main>
+<div class="container">
+    <h2>Create a New Quiz</h2>
+    <p style="color: var(--text-light); margin-bottom: 24px;">Fill in the details below to create a new quiz for students.</p>
+    <form id="create-quiz-form" onsubmit="create_quiz(event)">
+        <div class="form-group">
+            <label for="quiz-title">Quiz Title</label>
+            <input type="text" id="quiz-title" name="quiz-title" placeholder="e.g. History Quiz" required>
+        </div>
+
+        <div id="questions-container">
+            <div class="question-block">
+                <h4>Question 1</h4>
+                <div class="form-group">
+                    <label for="q1-text">Question Text</label>
+                    <input type="text" id="q1-text" name="q1-text" required>
+                </div>
+                <div class="form-group">
+                    <label>Options</label>
+                    <input type="text" name="q1-op1" placeholder="Option 1" required>
+                    <input type="text" name="q1-op2" placeholder="Option 2" required>
+                    <input type="text" name="q1-op3" placeholder="Option 3" required>
+                    <input type="text" name="q1-op4" placeholder="Option 4" required>
+                </div>
+                <div class="form-group">
+                    <label for="q1-correct">Correct Answer</label>
+                    <input type="text" id="q1-correct" name="q1-correct" placeholder="Enter the correct option text" required>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 8px;">
+            <button type="button" id="add-question" class="btn-secondary" onclick="add_question()">+ Add Another Question</button>
+            <button type="submit" class="btn-primary">Create Quiz</button>
+        </div>
+    </form>
+</div>
+    </main>
+    <footer>
+        <p>&copy; 2026 QuizHub. Built as a Student Project.</p>
+    </footer>
+<script src="index.js"></script>
+</body>
+</html>

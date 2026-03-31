@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard — QuizHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1><a href="home.html">Quiz<span class="logo-accent">Hub</span></a></h1>
+        <div class="nav-actions">
+            <a href="student.html">Dashboard</a>
+            <a href="#" onclick="logout()" class="btn-danger">Logout</a>
+        </div>
+    </header>
+    <main>
+<div class="container">
+    <h2>Student Dashboard</h2>
+    <p id="welcome-message" style="color: var(--text-light); margin-bottom: 24px;">Welcome! Choose a quiz below to get started.</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Quiz Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-quiz="technology">
+                <td><strong>Technology Quiz</strong></td>
+                <td class="quiz-status"><span class="badge badge-not-attempted">Not Attempted</span></td>
+                <td class="quiz-action"><a href="technology_quiz.html" class="btn-primary" style="padding: 8px 18px; font-size: 0.85rem;">Take Quiz</a></td>
+            </tr>
+            <tr data-quiz="general-knowledge">
+                <td><strong>General Knowledge</strong></td>
+                <td class="quiz-status"><span class="badge badge-not-attempted">Not Attempted</span></td>
+                <td class="quiz-action"><a href="gk_quiz.html" class="btn-primary" style="padding: 8px 18px; font-size: 0.85rem;">Take Quiz</a></td>
+            </tr>
+            <tr data-quiz="science">
+                <td><strong>Science Quiz</strong></td>
+                <td class="quiz-status"><span class="badge badge-not-attempted">Not Attempted</span></td>
+                <td class="quiz-action"><a href="science_quiz.html" class="btn-primary" style="padding: 8px 18px; font-size: 0.85rem;">Take Quiz</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    </main>
+    <footer>
+        <p>&copy; 2026 QuizHub. Built as a Student Project.</p>
+    </footer>
+<script src="index.js"></script>
+</body>
+</html>

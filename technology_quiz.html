@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology Quiz — QuizHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-quiz-id="technology">
+    <header>
+        <h1><a href="home.html">Quiz<span class="logo-accent">Hub</span></a></h1>
+        <div class="nav-actions">
+            <a href="student.html">← Back to Dashboard</a>
+            <a href="#" onclick="logout()" class="btn-danger">Logout</a>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="quiz-header">
+                <h2> Technology Quiz</h2>
+                <div class="timer-widget">
+                    <canvas id="timer-canvas" width="120" height="120"></canvas>
+                    <div id="timer">05:00</div>
+                </div>
+            </div>
+            <form id="quiz-form" onsubmit="submit_quiz(event)">
+                <div class="question" data-correct="a">
+                    <p>1. What does "CPU" stand for?</p>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q1-op1" name="q1" value="a">
+                            <label for="q1-op1">Central Processing Unit</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q1-op2" name="q1" value="b">
+                            <label for="q1-op2">Computer Personal Unit</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q1-op3" name="q1" value="c">
+                            <label for="q1-op3">Central Process Unit</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="b">
+                    <p>2. Which of the following is a programming language?</p>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q2-op1" name="q2" value="a">
+                            <label for="q2-op1">HTML</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q2-op2" name="q2" value="b">
+                            <label for="q2-op2">Python</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q2-op3" name="q2" value="c">
+                            <label for="q2-op3">CSS</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question" data-correct="a">
+                    <p>3. What does "SaaS" stand for?</p>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" id="q3-op1" name="q3" value="a">
+                            <label for="q3-op1">Software as a Service</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q3-op2" name="q3" value="b">
+                            <label for="q3-op2">Service as a Software</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" id="q3-op3" name="q3" value="c">
+                            <label for="q3-op3">Software and a Service</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Submit Quiz</button>
+            </form>
+            <div id="quiz-results"></div>
+            <div id="proctor-overlay"></div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2026 QuizHub. Built as a Student Project.</p>
+    </footer>
+    <script src="index.js"></script>
+</body>
+
+</html>

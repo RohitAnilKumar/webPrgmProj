@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — QuizHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1><a href="home.html">Quiz<span class="logo-accent">Hub</span></a></h1>
+        <div class="nav-actions">
+            <a href="signup.html">Sign Up</a>
+            <a href="login.html" class="btn-primary" style="padding: 8px 20px;">Login</a>
+        </div>
+    </header>
+    <main>
+<div class="container">
+    <h2>Welcome Back</h2>
+    <p style="color: var(--text-light); margin-bottom: 24px;">Sign in to access your dashboard and quizzes.</p>
+    <form onsubmit="handle_login(event)">
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            <div id="email-error" class="error-message"></div>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <div id="password-error" class="error-message"></div>
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; padding: 14px; font-size: 1.05rem;">Login</button>
+    </form>
+    <div class="login-link">
+        <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+    </div>
+    <hr style="margin: 24px 0; border: none; border-top: 1px solid var(--gray-200);">
+    <p style="text-align: center; color: var(--text-light); font-size: 0.85rem; margin-bottom: 12px;">Quick Access (Demo)</p>
+    <div class="login-actions">
+        <a href="student.html" class="btn-secondary">Student Dashboard</a>
+        <a href="admin.html" class="btn-secondary">Admin Dashboard</a>
+    </div>
+</div>
+</main>
+    <footer>
+        <p>&copy; 2026 QuizHub. Built as a Student Project.</p>
+    </footer>
+<script src="index.js"></script>
+</body>
+</html>
