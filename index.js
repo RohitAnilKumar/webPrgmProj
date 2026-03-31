@@ -543,7 +543,7 @@ function populateLeaderboard() {
 /* ===== Logout ===== */
 function logout() {
     sessionStorage.removeItem('currentUser');
-    window.location.href = 'home.html';
+    window.location.href = 'index.html';
 }
 
 /* ===== Get Current User Email ===== */
